@@ -3,6 +3,7 @@ import json
 import csv
 import os
 import re
+import io
 import pathlib
 
 def export_all_files(apiKey, rootPath):
@@ -18,8 +19,7 @@ def export_all_files(apiKey, rootPath):
                 #print(filesPath)
                 pathlib.Path(filesPath).mkdir(parents=True, exist_ok=True)
                 with open(os.path.join(viewPath, re.sub(r'[^a-zA-Z0-9 ]', '', grid['name']).strip() + '.csv'), 'w', encoding="UTF8") as file:
-                    writer = csv.writer(file)
-                    writer.writerow(view)
+                    file.write(view)
                 file_column_names = get_file_column_name(apiKey, grid['defaultAccessViewId'])
                 file_ids = []
                 for column_name in file_column_names:
@@ -83,4 +83,4 @@ def gridly_api_call(apiKey, url, js=True):
     else:
         return response
 
-export_all_files("APIKEY", r"ROOTPATHFORFILES")
+export_all_files("APIKEY", r"EXPORTROOTPATH")
